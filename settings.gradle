@@ -12,5 +12,8 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
-rootProject.name = "ComposeTest"
+rootProject.name = "android-template"
 include ':app'
+include ':presenter'
+include ':data'
+include ':domain'
