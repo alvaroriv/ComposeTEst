@@ -5,12 +5,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.koombea.composetest.presenter.ui.home.DashboardScreen
-import com.koombea.composetest.presenter.ui.login.LoginScreen
+import com.koombea.presenter.ui.login.LoginScreen
 import com.koombea.presenter.model.Routes
 import com.koombea.presenter.ui.signup.SignUpScreen
 
 @Composable
-fun MainScreen(){
+fun MainScreen(authViewModel: AuthViewModel){
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = Routes.Login.route) {
@@ -20,7 +20,7 @@ fun MainScreen(){
         }
 
         composable(Routes.Login.route) {
-            LoginScreen(navController = navController)
+            LoginScreen(navController = navController,authViewModel)
         }
 
         composable(Routes.Dashboard.route) {

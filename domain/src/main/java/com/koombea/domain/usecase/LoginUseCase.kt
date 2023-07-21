@@ -1,11 +1,11 @@
 package com.koombea.domain.usecase
 
 import com.koombea.data.character.base.OperationResult
-import com.koombea.data.character.repository.RootCheckerRepository
+import com.koombea.data.character.repository.AuthRepository
 
-class GetRootStatusUseCase(private val rootCheckerRepository: RootCheckerRepository) {
-    suspend fun perform(): OperationResult<Boolean> {
-      return  when(val result =  rootCheckerRepository.getRootStatus()){
+class LoginUseCase(private val authRepository: AuthRepository) {
+    suspend fun perform(email: String, password: String): OperationResult<Boolean> {
+      return  when(val result =  authRepository.login(email,password)){
               is OperationResult.Success -> {
                   OperationResult.Success(result.data)
               }

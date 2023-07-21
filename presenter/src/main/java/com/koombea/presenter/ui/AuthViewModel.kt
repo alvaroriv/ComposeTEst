@@ -1,4 +1,4 @@
-package com.koombea.presenter.ui.character
+package com.koombea.presenter.ui
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,34 +9,36 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class CharacterListViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
+class AuthViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
 
     private val _state = MutableStateFlow(MainActivityState())
+
     val state: StateFlow<MainActivityState>
         get() = _state
 
-    fun getRootStatus() {
+    fun login(email: String, password: String) {
+        _state.value = _state.value.copy(isLogged = -1)
         viewModelScope.launch(Dispatchers.IO) {
-            loginUseCase.perform("","").let { result ->
+            loginUseCase.perform(email, password).let { result ->
                 when (result) {
-                    is OperationResult.Success ->
-                        _state.value = _state.value.copy(rootMessage = result.data)
-                    is OperationResult.Error -> onGetCharacterListError(result)
+                    is OperationResult.Success -> {
+                        _state.value = _state.value.copy(isLogged = 1)
+                    }
+                    is OperationResult.Error -> {
+                        _state.value = _state.value.copy(isLogged = 0)
+                    }
+
                 }
             }
         }
     }
 
     private fun onGetCharacterListError(result: OperationResult.Error) {
-        _state.value = _state.value.copy(loading = false, list = emptyList(),
-        error = result.exception?.message )
+        _state.value = _state.value.copy(error = result.exception?.message )
     }
 }
 
 data class MainActivityState(
-    val loading: Boolean? = false,
-    val list: List<String>? = listOf(),
     val error: String? = "",
-    val rootMessage: Boolean? = false
+    val isLogged: Int = -1
 )
-

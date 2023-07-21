@@ -1,13 +1,13 @@
 package com.koombea.androidtemplate.di
 
-import com.koombea.data.character.repository.RootCheckerRepository
-import com.koombea.data.character.repository.RootCheckerRepositoryImp
+import com.koombea.data.character.repository.AuthRepository
+import com.koombea.data.character.repository.AuthRepositoryImp
 import org.koin.dsl.module
 
 val repositoryModule = module {
-    single<RootCheckerRepository> {
-        RootCheckerRepositoryImp(
-            rootCheckerDataSource = get()
+    single<AuthRepository> {
+        AuthRepositoryImp(
+            authDataSource = get()
         )
     }
 }
