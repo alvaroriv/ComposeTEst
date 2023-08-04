@@ -15,12 +15,8 @@ fun MainScreen(authViewModel: AuthViewModel){
 
     NavHost(navController = navController, startDestination = Routes.Login.route) {
 
-        composable(Routes.SignUp.route) {
-            SignUpScreen()
-        }
-
         composable(Routes.Login.route) {
-            LoginScreen(navController = navController,authViewModel)
+            LoginScreen(authViewModel)
         }
 
         composable(Routes.Dashboard.route) {

@@ -27,12 +27,12 @@ import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.koombea.presenter.ui.AuthViewModel
 import com.koombea.presenter.ui.theme.textFieldLineColor
 
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview(showSystemUi = true)
 @Composable
-fun SignUpScreen() {
+fun SignUpScreen(authViewModel: AuthViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()

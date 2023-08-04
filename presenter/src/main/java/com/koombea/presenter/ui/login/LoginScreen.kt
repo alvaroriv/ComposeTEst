@@ -2,6 +2,7 @@
 
 package com.koombea.presenter.ui.login
 
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -23,6 +24,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -38,6 +40,8 @@ import com.koombea.androidtemplate.ui.theme.GrayBorder
 import com.koombea.androidtemplate.ui.theme.WhiteBorder
 import com.koombea.presenter.model.Routes
 import com.koombea.presenter.ui.AuthViewModel
+import com.koombea.presenter.ui.DashboardActivity
+import com.koombea.presenter.ui.SignUpActivity
 import com.koombea.presenter.ui.theme.textFieldLineColor
 
 @Composable
@@ -56,7 +60,7 @@ fun CustomTextField(field: String, name: String, onTextChanged: (String) -> Unit
 
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel) {
+fun LoginScreen(authViewModel: AuthViewModel) {
     val state by authViewModel.state.collectAsStateWithLifecycle()
     Column(
         modifier = Modifier
@@ -65,7 +69,7 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel) 
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-
+        val context = LocalContext.current
         val email = remember { mutableStateOf(TextFieldValue()) }
         val password = remember { mutableStateOf(TextFieldValue()) }
 
@@ -111,7 +115,8 @@ fun LoginScreen(navController: NavHostController, authViewModel: AuthViewModel) 
         Spacer(modifier = Modifier.height(36.dp))
         ClickableText(
             text = AnnotatedString("Create Account"),
-            onClick = { navController.navigate(Routes.SignUp.route) },
+            onClick = {
+                context.startActivity(Intent(context, SignUpActivity::class.java)) },
             style = TextStyle(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold

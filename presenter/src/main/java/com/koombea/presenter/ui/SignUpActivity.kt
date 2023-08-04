@@ -2,7 +2,6 @@
 
 package com.koombea.presenter.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -19,16 +18,12 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.koombea.androidtemplate.ui.theme.AndroidtemplateTheme
-import com.koombea.couchbasewrapper.database.CouchbaseDatabase
-import com.koombea.couchbasewrapper.database.CouchbaseDocument
-import com.koombea.data.character.base.model.User
-import com.koombea.presenter.ui.login.LoginScreen
+import com.koombea.presenter.ui.signup.SignUpScreen
+import com.koombea.presenter.ui.splash.SplashViewModel
 import kotlinx.coroutines.launch
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.couchbase.lite.Expression
 
-class MainActivity : ComponentActivity() {
+class SignUpActivity : ComponentActivity() {
 
     private val authViewModel: AuthViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,7 +35,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    LoginScreen(authViewModel)
+                    SignUpScreen(authViewModel)
                 }
             }
         }
@@ -53,12 +48,11 @@ class MainActivity : ComponentActivity() {
                 authViewModel.state.collect {
                     when (it.isLogged) {
                         1 -> {
-                            startActivity(Intent(this@MainActivity, DashboardActivity::class.java))
-                            finish()
+                        //    Toast.makeText(this@MainActivity,"Success", Toast.LENGTH_LONG).show()
                         }
 
                         0 -> {
-                            Toast.makeText(this@MainActivity,"Error", Toast.LENGTH_LONG).show()
+                        //    Toast.makeText(this@MainActivity,"Error", Toast.LENGTH_LONG).show()
                         }
 
                         else -> {}
@@ -66,15 +60,5 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
-    }
-}
-
-
-
-@Preview(showSystemUi = true)
-@Composable
-fun DefaultPreview() {
-    AndroidtemplateTheme {
-      //  MainScreen()
     }
 }

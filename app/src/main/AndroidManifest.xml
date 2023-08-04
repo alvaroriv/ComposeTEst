@@ -27,6 +27,12 @@
         <activity
             android:name="com.koombea.presenter.ui.AddTransactionActivity">
         </activity>
+        <activity
+            android:name="com.koombea.presenter.ui.DashboardActivity">
+        </activity>
+        <activity
+            android:name="com.koombea.presenter.ui.SignUpActivity">
+        </activity>
     </application>
 
 </manifest>
