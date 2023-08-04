@@ -4,8 +4,8 @@ import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.rememberNavController
-import com.koombea.presenter.ui.BottomNavigation
-import com.koombea.presenter.ui.NavigationGraph
+import com.koombea.presenter.ui.home.BottomNavigation
+import com.koombea.presenter.ui.home.NavigationGraph
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")

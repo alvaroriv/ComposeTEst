@@ -2,7 +2,7 @@
     ExperimentalMaterialApi::class, ExperimentalMaterialApi::class
 )
 
-package com.koombea.presenter.ui
+package com.koombea.presenter.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Activity

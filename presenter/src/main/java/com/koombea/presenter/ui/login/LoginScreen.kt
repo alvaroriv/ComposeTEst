@@ -35,13 +35,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.navigation.NavHostController
 import com.koombea.androidtemplate.ui.theme.GrayBorder
 import com.koombea.androidtemplate.ui.theme.WhiteBorder
-import com.koombea.presenter.model.Routes
 import com.koombea.presenter.ui.AuthViewModel
-import com.koombea.presenter.ui.DashboardActivity
-import com.koombea.presenter.ui.SignUpActivity
+import com.koombea.presenter.ui.signup.SignUpActivity
 import com.koombea.presenter.ui.theme.textFieldLineColor
 
 @Composable

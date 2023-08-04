@@ -1,4 +1,4 @@
-package com.koombea.presenter.ui
+package com.koombea.presenter.ui.home
 
 import androidx.compose.foundation.layout.height
 import androidx.compose.material.BottomNavigationItem

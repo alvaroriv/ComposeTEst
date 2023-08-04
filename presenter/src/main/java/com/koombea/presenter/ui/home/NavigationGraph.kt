@@ -1,4 +1,4 @@
-package com.koombea.presenter.ui
+package com.koombea.presenter.ui.home
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

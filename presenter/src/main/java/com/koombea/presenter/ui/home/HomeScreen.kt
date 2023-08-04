@@ -40,7 +40,7 @@ import com.koombea.androidtemplate.ui.theme.GreenContainer
 import com.koombea.androidtemplate.ui.theme.RedContainer
 import com.koombea.presenter.R
 import com.koombea.presenter.model.Transaction
-import com.koombea.presenter.ui.AddTransactionActivity
+import com.koombea.presenter.ui.home.AddTransactionActivity
 
 @Composable
 fun Content(){

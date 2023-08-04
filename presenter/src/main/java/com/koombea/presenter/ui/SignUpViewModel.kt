@@ -12,23 +12,23 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class AuthViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
+class SignUpViewModel(private val signUpUseCase: SignUpUseCase) : ViewModel() {
 
-    private val _state = MutableStateFlow(MainActivityState())
+    private val _state = MutableStateFlow(SignUpActivityState())
 
-    val state: StateFlow<MainActivityState>
+    val state: StateFlow<SignUpActivityState>
         get() = _state
 
-    fun login(email: String, password: String) {
-        _state.value = _state.value.copy(isLogged = -1)
+    fun signup(user: User) {
+        _state.value = _state.value.copy(isSignup = -1)
         viewModelScope.launch(Dispatchers.IO) {
-            loginUseCase.perform(email, password).let { result ->
+            signUpUseCase.perform(user).let { result ->
                 when (result) {
                     is OperationResult.Success -> {
-                        _state.value = _state.value.copy(isLogged = 1)
+                        _state.value = _state.value.copy(isSignup = 1)
                     }
                     is OperationResult.Error -> {
-                        _state.value = _state.value.copy(isLogged = 0)
+                        _state.value = _state.value.copy(isSignup = 0)
                     }
 
                 }
@@ -50,9 +50,9 @@ class AuthViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     }
 }
 
-data class MainActivityState(
+data class SignUpActivityState(
     val error: String? = "",
-    val isLogged: Int = -1,
+    val isSignup: Int = -1,
     val userName: String = "",
     val userEmail: String = ""
 )

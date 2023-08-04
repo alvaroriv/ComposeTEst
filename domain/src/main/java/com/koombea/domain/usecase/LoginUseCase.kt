@@ -1,6 +1,7 @@
 package com.koombea.domain.usecase
 
 import com.koombea.data.character.base.OperationResult
+import com.koombea.data.character.base.model.User
 import com.koombea.data.character.repository.AuthRepository
 
 class LoginUseCase(private val authRepository: AuthRepository) {

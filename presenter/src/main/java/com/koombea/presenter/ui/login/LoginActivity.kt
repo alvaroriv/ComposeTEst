@@ -1,13 +1,12 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.koombea.presenter.ui
+package com.koombea.presenter.ui.login
 
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
@@ -19,14 +18,10 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.koombea.androidtemplate.ui.theme.AndroidtemplateTheme
-import com.koombea.couchbasewrapper.database.CouchbaseDatabase
-import com.koombea.couchbasewrapper.database.CouchbaseDocument
-import com.koombea.data.character.base.model.User
-import com.koombea.presenter.ui.login.LoginScreen
+import com.koombea.presenter.ui.AuthViewModel
+import com.koombea.presenter.ui.home.DashboardActivity
 import kotlinx.coroutines.launch
-import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import com.couchbase.lite.Expression
 
 class MainActivity : ComponentActivity() {
 
