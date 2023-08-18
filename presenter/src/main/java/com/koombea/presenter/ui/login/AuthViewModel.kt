@@ -1,11 +1,10 @@
-package com.koombea.presenter.ui
+package com.koombea.presenter.ui.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.koombea.data.character.base.model.User
 import com.koombea.data.character.base.OperationResult
 import com.koombea.domain.usecase.LoginUseCase
-import com.koombea.domain.usecase.SignUpUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,10 +18,10 @@ class AuthViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
     val state: StateFlow<MainActivityState>
         get() = _state
 
-    fun login(email: String, password: String) {
+    fun login(user: User) {
         _state.value = _state.value.copy(isLogged = -1)
         viewModelScope.launch(Dispatchers.IO) {
-            loginUseCase.perform(email, password).let { result ->
+            loginUseCase.perform(user).let { result ->
                 when (result) {
                     is OperationResult.Success -> {
                         _state.value = _state.value.copy(isLogged = 1)
@@ -54,5 +53,5 @@ data class MainActivityState(
     val error: String? = "",
     val isLogged: Int = -1,
     val userName: String = "",
-    val userEmail: String = ""
+    val userEmail: String = "",
 )

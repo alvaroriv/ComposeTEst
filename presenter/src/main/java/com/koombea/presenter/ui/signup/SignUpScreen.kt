@@ -1,6 +1,5 @@
 package com.koombea.presenter.ui.signup
 
-import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,16 +25,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.koombea.presenter.ui.AuthViewModel
-import com.koombea.presenter.ui.home.DashboardActivity
+import com.koombea.data.character.base.model.User
 import com.koombea.presenter.ui.theme.textFieldLineColor
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SignUpScreen(authViewModel: AuthViewModel) {
+fun SignUpScreen(signUpViewModel: SignUpViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -95,7 +92,13 @@ fun SignUpScreen(authViewModel: AuthViewModel) {
         Spacer(modifier = Modifier.height(56.dp))
         Box() {
             Button(
-                onClick = {  context.startActivity(Intent(context, DashboardActivity::class.java)) },
+                onClick = {
+                    var user = User(name = name.value.text,
+                        email = email.value.text,
+                        birthday = birthday.value.text,
+                        password = password.value.text)
+                    signUpViewModel.signup(user)
+                },
                 shape = RoundedCornerShape(16.dp),
                 modifier = Modifier
                     .fillMaxWidth()

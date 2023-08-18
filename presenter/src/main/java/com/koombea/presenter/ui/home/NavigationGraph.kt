@@ -5,12 +5,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.koombea.composetest.presenter.ui.home.HomeScreen
-import com.koombea.composetest.presenter.ui.home.SettingsScreen
 import com.koombea.composetest.presenter.ui.home.TransactionScreen
 import com.koombea.presenter.model.BottomNavItem
+import com.koombea.presenter.ui.login.SettingsViewModel
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
+fun NavigationGraph(navController: NavHostController, settingsViewModel: SettingsViewModel) {
     NavHost(navController, startDestination = BottomNavItem.Home.screen_route) {
         composable(BottomNavItem.Home.screen_route) {
             HomeScreen(navController)
@@ -19,7 +19,7 @@ fun NavigationGraph(navController: NavHostController) {
             TransactionScreen()
         }
         composable(BottomNavItem.Settings.screen_route) {
-            SettingsScreen()
+            SettingsScreen(settingsViewModel)
         }
     }
 }

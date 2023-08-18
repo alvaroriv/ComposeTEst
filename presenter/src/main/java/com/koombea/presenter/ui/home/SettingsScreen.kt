@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.koombea.composetest.presenter.ui.home
+package com.koombea.presenter.ui.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -21,6 +21,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -31,11 +32,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.koombea.androidtemplate.ui.theme.GrayBorder
 import com.koombea.presenter.R
+import com.koombea.presenter.ui.login.SettingsViewModel
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun SettingsContent() {
+fun SettingsContent(settingsViewModel: SettingsViewModel) {
+    val state by settingsViewModel.state.collectAsStateWithLifecycle()
     Column(
         modifier = Modifier
             .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
@@ -53,12 +59,12 @@ fun SettingsContent() {
             )
             Column() {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(text =  "Email",
+                    Text(text =  state.user?.email.toString(),
                         style = TextStyle(fontSize = 14.sp, color = GrayBorder, fontWeight = FontWeight.Bold), textAlign = TextAlign.Center)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                    Text(text = "Iriana Saliha",
+                    Text(text = state.user?.name.toString(),
                         style = TextStyle(fontSize = 24.sp, color = Color.Black), textAlign = TextAlign.Center)
                     Spacer(modifier = Modifier.weight(1f))
                 }
@@ -75,7 +81,9 @@ fun SettingsContent() {
             }
         }
         Spacer(modifier = Modifier.height(28.dp))
-        Row(modifier = Modifier.fillMaxWidth().height(56.dp)) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)) {
             Text(
                 text = "Currency",
                 style = TextStyle(
@@ -91,13 +99,17 @@ fun SettingsContent() {
                     color = Color(0xFF91919F)
                 )
             )
-            Icon(modifier = Modifier.height(20.dp).padding(6.dp,0.dp,0.dp,0.dp),
+            Icon(modifier = Modifier
+                .height(20.dp)
+                .padding(6.dp, 0.dp, 0.dp, 0.dp),
                 imageVector = Icons.Filled.ArrowForward,
                 contentDescription = "image description",
                 tint = Color(0xFF7F3DFF)
             )
         }
-        Row(modifier = Modifier.fillMaxWidth().height(56.dp)) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp)) {
             Text(
                 text = "Security",
                 style = TextStyle(
@@ -113,7 +125,9 @@ fun SettingsContent() {
                     color = Color(0xFF91919F)
                 )
             )
-            Icon(modifier = Modifier.height(20.dp).padding(6.dp,0.dp,0.dp,0.dp),
+            Icon(modifier = Modifier
+                .height(20.dp)
+                .padding(6.dp, 0.dp, 0.dp, 0.dp),
                 imageVector = Icons.Filled.ArrowForward,
                 tint = Color(0xFF7F3DFF),
                 contentDescription = "image description"
@@ -141,9 +155,9 @@ fun SettingsHeader(){
     Divider(color = Color.Gray, thickness = 1.dp)
 }
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-@Preview(showSystemUi = true)
-fun SettingsScreen() {
+fun SettingsScreen(settingsViewModel: SettingsViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -151,7 +165,7 @@ fun SettingsScreen() {
         verticalArrangement = Arrangement.Top
     ) {
         SettingsHeader()
-        SettingsContent()
+        SettingsContent(settingsViewModel)
     }
 
 }

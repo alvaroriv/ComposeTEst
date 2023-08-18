@@ -1,10 +1,9 @@
-package com.koombea.presenter.ui
+package com.koombea.presenter.ui.signup
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.koombea.data.character.base.model.User
 import com.koombea.data.character.base.OperationResult
-import com.koombea.domain.usecase.LoginUseCase
 import com.koombea.domain.usecase.SignUpUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

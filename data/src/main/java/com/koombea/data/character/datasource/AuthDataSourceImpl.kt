@@ -10,11 +10,11 @@ import com.scottyab.rootbeer.RootBeer
 
 class AuthDataSourceImpl(private val context: Context,private val couchbaseDatabase: CouchbaseDatabase): AuthDataSource {
 
-    override suspend fun login(email: String, password: String): OperationResult<Boolean> {
+    override suspend fun login(user: User): OperationResult<Boolean> {
         addTestUser()
 
-        val expression = Expression.property("attributes.email").equalTo(Expression.string(email))
-            .and(Expression.property("attributes.password").equalTo(Expression.string(password)))
+        val expression = Expression.property("attributes.email").equalTo(Expression.string(user.email))
+            .and(Expression.property("attributes.password").equalTo(Expression.string(user.password)))
         val user = couchbaseDatabase.fetchAll<User>(whereExpression = expression)
         return if (user.isNotEmpty()) {
             OperationResult.Success(true)
@@ -33,8 +33,18 @@ class AuthDataSourceImpl(private val context: Context,private val couchbaseDatab
         }
     }
 
+    override suspend fun getUser(): OperationResult<User> {
+        //val expression = Expression.property("attributes.email").equalTo(Expression.string(email))
+        val user = couchbaseDatabase.fetch<User>("1")
+        return if (user!=null) {
+            OperationResult.Success(user)
+        } else {
+            OperationResult.Error(Exception("Error"))
+        }
+    }
+
     private fun addTestUser(){
-        val user2 = User(email = "a@a.com", password ="111")
+        val user2 = User(email = "a@a.com", password ="111", name = "alvaro rivera")
         val document = CouchbaseDocument(id = "1", attributes = user2)
         couchbaseDatabase.save(document)
     }

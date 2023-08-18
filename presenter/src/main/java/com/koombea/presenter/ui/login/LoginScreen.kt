@@ -37,7 +37,7 @@ import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.koombea.androidtemplate.ui.theme.GrayBorder
 import com.koombea.androidtemplate.ui.theme.WhiteBorder
-import com.koombea.presenter.ui.AuthViewModel
+import com.koombea.data.character.base.model.User
 import com.koombea.presenter.ui.signup.SignUpActivity
 import com.koombea.presenter.ui.theme.textFieldLineColor
 
@@ -58,7 +58,7 @@ fun CustomTextField(field: String, name: String, onTextChanged: (String) -> Unit
 @OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
 fun LoginScreen(authViewModel: AuthViewModel) {
-    val state by authViewModel.state.collectAsStateWithLifecycle()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -66,6 +66,7 @@ fun LoginScreen(authViewModel: AuthViewModel) {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        val state by authViewModel.state.collectAsStateWithLifecycle()
         val context = LocalContext.current
         val email = remember { mutableStateOf(TextFieldValue()) }
         val password = remember { mutableStateOf(TextFieldValue()) }
@@ -75,7 +76,8 @@ fun LoginScreen(authViewModel: AuthViewModel) {
         OutlinedTextField(
             label = { Text(text = "Email") },
             value = email.value,
-            onValueChange = { email.value = it },
+            onValueChange = {
+                email.value = it },
             modifier = Modifier.fillMaxWidth(),
             colors = textFieldLineColor()
         )
@@ -94,7 +96,8 @@ fun LoginScreen(authViewModel: AuthViewModel) {
         Spacer(modifier = Modifier.height(56.dp))
         Button(
             onClick = {//navController.navigate(Routes.Dashboard.route)
-                authViewModel.login(email.value.text, password.value.text)
+                var user = User(email = email.value.text, password = password.value.text)
+                authViewModel.login(user)
                  },
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier

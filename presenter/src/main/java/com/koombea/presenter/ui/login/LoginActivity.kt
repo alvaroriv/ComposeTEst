@@ -18,7 +18,6 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import com.koombea.androidtemplate.ui.theme.AndroidtemplateTheme
-import com.koombea.presenter.ui.AuthViewModel
 import com.koombea.presenter.ui.home.DashboardActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
