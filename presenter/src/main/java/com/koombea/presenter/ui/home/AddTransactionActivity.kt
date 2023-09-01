@@ -60,12 +60,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.koombea.androidtemplate.ui.theme.AndroidtemplateTheme
+import com.koombea.presenter.ui.login.TransactionViewModel
 import com.koombea.presenter.ui.theme.textFieldLineColor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class AddTransactionActivity : ComponentActivity() {
-
+    private val transactionViewModel: TransactionViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
@@ -75,7 +77,7 @@ class AddTransactionActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    BottomSheetLayout()
+                    BottomSheetLayout(transactionViewModel)
                 }
             }
         }
@@ -84,7 +86,7 @@ class AddTransactionActivity : ComponentActivity() {
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun BottomSheetLayout() {
+fun BottomSheetLayout(transactionViewModel: TransactionViewModel) {
     val coroutineScope = rememberCoroutineScope()
     val modalSheetState = rememberModalBottomSheetState(
         initialValue = ModalBottomSheetValue.Hidden,
@@ -197,16 +199,15 @@ fun BottomSheetLayout() {
         }
     ) {
         Scaffold {
-            AddScreen(coroutineScope, modalSheetState)
+            AddScreen(coroutineScope, modalSheetState,transactionViewModel)
         }
     }
 }
 
-@Preview(showSystemUi = true)
 @Composable
-fun AddPreview() {
+fun AddPreview(transactionViewModel: TransactionViewModel) {
     AndroidtemplateTheme {
-        BottomSheetLayout()
+        BottomSheetLayout(transactionViewModel)
     }
 }
 
@@ -231,7 +232,7 @@ fun HeaderAddScreen() {
 }
 
 @Composable
-fun ContentAddScreen(coroutineScope: CoroutineScope, modalSheetState: ModalBottomSheetState) {
+fun ContentAddScreen(coroutineScope: CoroutineScope, modalSheetState: ModalBottomSheetState,transactionViewModel: TransactionViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -377,6 +378,8 @@ fun ContentAddScreen(coroutineScope: CoroutineScope, modalSheetState: ModalBotto
         Spacer(modifier = Modifier.height(24.dp))
         Button(
             onClick = {
+         //       var transaction = Transaction(price = "1", description = "name", name = "")
+           //     transactionViewModel.addTransaction(transaction)
             },
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier
@@ -396,7 +399,7 @@ fun ContentAddScreen(coroutineScope: CoroutineScope, modalSheetState: ModalBotto
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun AddScreen(coroutineScope: CoroutineScope, modalSheetState: ModalBottomSheetState) {
+fun AddScreen(coroutineScope: CoroutineScope, modalSheetState: ModalBottomSheetState,transactionViewModel: TransactionViewModel) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -404,7 +407,7 @@ fun AddScreen(coroutineScope: CoroutineScope, modalSheetState: ModalBottomSheetS
             .verticalScroll(rememberScrollState())
     ) {
         HeaderAddScreen()
-        ContentAddScreen(coroutineScope,modalSheetState)
+        ContentAddScreen(coroutineScope,modalSheetState,transactionViewModel)
     }
 
 }

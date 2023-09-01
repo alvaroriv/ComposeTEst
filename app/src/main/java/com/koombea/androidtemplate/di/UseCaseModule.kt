@@ -1,5 +1,7 @@
 package com.koombea.androidtemplate.di
 
+import com.koombea.domain.usecase.AddTransactionUseCase
+import com.koombea.domain.usecase.GetTransactionsUseCase
 import com.koombea.domain.usecase.GetUserUseCase
 import com.koombea.domain.usecase.LoginUseCase
 import com.koombea.domain.usecase.SignUpUseCase
@@ -10,4 +12,6 @@ val useCaseModule = module {
     single { LoginUseCase(authRepository = get()) }
     single { SignUpUseCase(authRepository = get()) }
     single { GetUserUseCase(authRepository = get()) }
+    single { GetTransactionsUseCase(transactionRepository = get()) }
+    single { AddTransactionUseCase(transactionRepository = get()) }
 }
