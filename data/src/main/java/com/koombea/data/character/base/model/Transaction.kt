@@ -1,6 +1,7 @@
 package com.koombea.data.character.base.model
 
 data class Transaction(
+    var value: String = "",
     var category: String = "",
     var description: String = "",
     var wallet: String = "",

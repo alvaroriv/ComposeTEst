@@ -52,7 +52,8 @@ class MainActivity : ComponentActivity() {
                         }
 
                         0 -> {
-                            Toast.makeText(this@MainActivity,"Error", Toast.LENGTH_LONG).show()
+                            startActivity(Intent(this@MainActivity, DashboardActivity::class.java))
+                            finish()
                         }
 
                         else -> {}

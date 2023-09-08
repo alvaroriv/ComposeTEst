@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalLifecycleComposeApi::class)
 
 package com.koombea.presenter.ui.home
 
@@ -38,12 +38,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.koombea.composetest.presenter.ui.home.ItemTransaction
-import com.koombea.composetest.presenter.ui.home.getTransactions
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.koombea.presenter.R
+import com.koombea.presenter.ui.login.TransactionViewModel
 
 @Composable
-fun ContentTransactionScreen(){
+fun ContentTransactionScreen(transactionViewModel: TransactionViewModel){
     Column( modifier = Modifier
         .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
     }
@@ -57,7 +58,7 @@ fun ContentTransactionScreen(){
             textAlign = TextAlign.Center)
     }
     Spacer(modifier = Modifier.height(24.dp))
-    TransactionList()
+    TransactionList(transactionViewModel)
     Spacer(modifier = Modifier.height(18.dp))
     Row(
         Modifier
@@ -68,7 +69,7 @@ fun ContentTransactionScreen(){
             textAlign = TextAlign.Center)
     }
     Spacer(modifier = Modifier.height(24.dp))
-    TransactionList()
+    TransactionList(transactionViewModel)
 }
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -123,8 +124,7 @@ fun HeaderTransactionScreen(){
 }
 
 @Composable
-@Preview(showSystemUi = true)
-fun TransactionScreen() {
+fun TransactionScreen(transactionViewModel: TransactionViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -132,18 +132,19 @@ fun TransactionScreen() {
         verticalArrangement = Arrangement.Top
     ) {
         HeaderTransactionScreen()
-        ContentTransactionScreen()
+        ContentTransactionScreen(transactionViewModel)
     }
 
 }
 
 @Composable
-fun TransactionList() {
+fun TransactionList(transactionViewModel: TransactionViewModel) {
+    val state by transactionViewModel.state.collectAsStateWithLifecycle()
     val context = LocalContext.current
     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-       items(getTransactions()){ transaction ->
+       items(state.transactions){ transaction ->
             ItemTransaction(transaction = transaction)
-            { Toast.makeText(context, it.name, Toast.LENGTH_SHORT).show() }
+            { Toast.makeText(context, it.description, Toast.LENGTH_SHORT).show() }
         }
     }
 }

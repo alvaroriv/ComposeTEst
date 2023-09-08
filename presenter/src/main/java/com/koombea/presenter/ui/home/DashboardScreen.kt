@@ -7,15 +7,16 @@ import androidx.navigation.compose.rememberNavController
 import com.koombea.presenter.ui.home.BottomNavigation
 import com.koombea.presenter.ui.home.NavigationGraph
 import com.koombea.presenter.ui.login.SettingsViewModel
+import com.koombea.presenter.ui.login.TransactionViewModel
 
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun DashboardScreen(settingsViewModel: SettingsViewModel){
+fun DashboardScreen(settingsViewModel: SettingsViewModel, transactionViewModel: TransactionViewModel){
     val navController = rememberNavController()
     Scaffold(
         bottomBar = { BottomNavigation(navController = navController) }
     ) {
-        NavigationGraph(navController = navController, settingsViewModel)
+        NavigationGraph(navController = navController, settingsViewModel,transactionViewModel)
     }
 }

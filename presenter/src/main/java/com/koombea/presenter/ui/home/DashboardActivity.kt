@@ -18,22 +18,25 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.koombea.androidtemplate.ui.theme.AndroidtemplateTheme
 import com.koombea.presenter.ui.login.AuthViewModel
 import com.koombea.presenter.ui.login.SettingsViewModel
+import com.koombea.presenter.ui.login.TransactionViewModel
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardActivity : ComponentActivity() {
 
     private val settingsViewModel: SettingsViewModel by viewModel()
+    private val transactionViewModel: TransactionViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         settingsViewModel.getUser()
+        transactionViewModel.getTransactions()
         setContent {
             AndroidtemplateTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    DashboardScreen(settingsViewModel)
+                    DashboardScreen(settingsViewModel,transactionViewModel)
                 }
             }
         }

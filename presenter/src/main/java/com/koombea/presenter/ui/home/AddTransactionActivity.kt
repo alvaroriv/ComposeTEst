@@ -6,7 +6,9 @@ package com.koombea.presenter.ui.home
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
@@ -59,7 +61,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.koombea.androidtemplate.ui.theme.AndroidtemplateTheme
+import com.koombea.data.character.base.model.Transaction
 import com.koombea.presenter.ui.login.TransactionViewModel
 import com.koombea.presenter.ui.theme.textFieldLineColor
 import kotlinx.coroutines.CoroutineScope
@@ -78,6 +84,27 @@ class AddTransactionActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     BottomSheetLayout(transactionViewModel)
+                }
+            }
+        }
+        observeViewModel()
+    }
+
+    private fun observeViewModel(){
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                transactionViewModel.state.collect {
+                    when (it.isAdded) {
+                        true -> {
+                            Toast.makeText(this@AddTransactionActivity,"Added", Toast.LENGTH_LONG).show()
+                        }
+
+                        false -> {
+                            Toast.makeText(this@AddTransactionActivity,"Error", Toast.LENGTH_LONG).show()
+                        }
+
+                        else -> {}
+                    }
                 }
             }
         }
@@ -378,8 +405,9 @@ fun ContentAddScreen(coroutineScope: CoroutineScope, modalSheetState: ModalBotto
         Spacer(modifier = Modifier.height(24.dp))
         Button(
             onClick = {
-         //       var transaction = Transaction(price = "1", description = "name", name = "")
-           //     transactionViewModel.addTransaction(transaction)
+                var transaction = Transaction(value = "4", category = "Food", description = "Desc", wallet = "Main",
+                attachment = "", reminder = "")
+                transactionViewModel.addTransaction(transaction)
             },
             shape = RoundedCornerShape(16.dp),
             modifier = Modifier

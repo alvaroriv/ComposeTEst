@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.koombea.composetest.presenter.ui.home
+package com.koombea.presenter.ui.home
 
 import android.content.Intent
 import android.widget.Toast
@@ -23,6 +23,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -33,17 +34,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
 import com.koombea.androidtemplate.ui.theme.BackgrounItemTransaction
 import com.koombea.androidtemplate.ui.theme.GrayBorder
 import com.koombea.androidtemplate.ui.theme.GreenContainer
 import com.koombea.androidtemplate.ui.theme.RedContainer
+import com.koombea.data.character.base.model.Transaction
 import com.koombea.presenter.R
-import com.koombea.presenter.model.Transaction
-import com.koombea.presenter.ui.home.AddTransactionActivity
+
+import com.koombea.presenter.ui.login.TransactionViewModel
 
 @Composable
-fun Content(){
+fun Content(transactionViewModel: TransactionViewModel){
     Column( modifier = Modifier
         .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
         Spacer(modifier = Modifier.height(23.dp))
@@ -124,7 +128,7 @@ fun Content(){
                 .padding(10.dp, 0.dp, 10.dp, 0.dp), textAlign = TextAlign.Center)
     }
     Spacer(modifier = Modifier.height(24.dp))
-    RecentTransactionList()
+    RecentTransactionList(transactionViewModel)
 }
 @Composable
 fun Header(navController: NavHostController){
@@ -149,7 +153,7 @@ fun Header(navController: NavHostController){
 
 @Composable
 //@Preview(showSystemUi = true)
-fun HomeScreen(navController: NavHostController) {
+fun HomeScreen(navController: NavHostController, transactionViewModel: TransactionViewModel) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -157,18 +161,21 @@ fun HomeScreen(navController: NavHostController) {
         verticalArrangement = Arrangement.Top
     ) {
         Header(navController)
-        Content()
+        Content(transactionViewModel)
     }
 
 }
 
+@OptIn(ExperimentalLifecycleComposeApi::class)
 @Composable
-fun RecentTransactionList() {
+fun RecentTransactionList(transactionViewModel: TransactionViewModel) {
+    val state by transactionViewModel.state.collectAsStateWithLifecycle()
+
     val context = LocalContext.current
     LazyColumn(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-       items(getTransactions()){ transaction ->
+        items(state.transactions){transaction ->
             ItemTransaction(transaction = transaction)
-            { Toast.makeText(context, it.name, Toast.LENGTH_SHORT).show() }
+            { Toast.makeText(context, it.description, Toast.LENGTH_SHORT).show() }
         }
     }
 }
@@ -186,10 +193,10 @@ fun ItemTransaction(transaction: Transaction, onItemSelected: (Transaction) -> U
         )
         Column() {
             Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-                Text(text =  transaction.name,
+                Text(text =  transaction.category,
                     style = TextStyle(fontSize = 16.sp, color = Color.Black, fontWeight = FontWeight.Bold), textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text =  transaction.price,
+                Text(text =  transaction.value,
                     style = TextStyle(fontSize = 16.sp, color = Color.Red), textAlign = TextAlign.Center)
             }
             Spacer(modifier = Modifier.height(13.dp))
@@ -203,20 +210,4 @@ fun ItemTransaction(transaction: Transaction, onItemSelected: (Transaction) -> U
 
         }
     }
-}
-
-fun getTransactions(): List<Transaction> {
-    return listOf(
-        Transaction("$-120", "Buy some grocery", "Shopping"),
-        Transaction("$-80", "Netflix", "Suscription"),
-        Transaction("$-32", "Lunch", "Food"),
-        Transaction("$-100", "Nintendo Switch", "Games"),
-        Transaction("$-42", "Dinner", "Food"),
-                Transaction("$-120", "Buy some grocery", "Shopping"),
-    Transaction("$-80", "Netflix", "Suscription"),
-    Transaction("$-32", "Lunch", "Food"),
-    Transaction("$-100", "Nintendo Switch", "Games"),
-    Transaction("$-42", "Dinner", "Food")
-
-    )
 }
