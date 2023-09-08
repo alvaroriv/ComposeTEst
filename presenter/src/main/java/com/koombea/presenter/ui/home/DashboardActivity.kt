@@ -29,7 +29,6 @@ class DashboardActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         settingsViewModel.getUser()
-        transactionViewModel.getTransactions()
         setContent {
             AndroidtemplateTheme {
                 Surface(
@@ -40,5 +39,10 @@ class DashboardActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        transactionViewModel.getTransactions()
     }
 }

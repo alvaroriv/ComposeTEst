@@ -35,11 +35,12 @@ class TransactionViewModel(private val getTransactionsUseCase: GetTransactionsUs
     }
 
     fun addTransaction(transaction: Transaction) {
+        _state.value = _state.value.copy(isAdded = -1)
         viewModelScope.launch(Dispatchers.IO) {
             addTransactionUseCase.perform(transaction).let { result ->
                 when (result) {
                     is OperationResult.Success -> {
-                        _state.value = _state.value.copy(isAdded = true)
+                        _state.value = _state.value.copy(isAdded = 1)
                     }
                     is OperationResult.Error -> {
                         _state.value = _state.value.copy(error = result.exception?.message )
@@ -53,6 +54,6 @@ class TransactionViewModel(private val getTransactionsUseCase: GetTransactionsUs
 
 data class AddTransactionState(
     val error: String? = "",
-    val isAdded: Boolean = false,
+    val isAdded: Int = -1,
     val transactions: List<Transaction> = listOf()
 )

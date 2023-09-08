@@ -12,7 +12,7 @@ import com.scottyab.rootbeer.RootBeer
 class TransactionDataSourceImpl(private val couchbaseDatabase: CouchbaseDatabase): TransactionDataSource {
 
     override suspend fun getTransaction(): OperationResult<List<Transaction>> {
-        val expression = Expression.property("attributes.id").equalTo(Expression.string("1"))
+        val expression = Expression.property("attributes.category").equalTo(Expression.string("Food"))
         val transactions = couchbaseDatabase.fetchAll<Transaction>(whereExpression = expression)
         return if (transactions.isNotEmpty()) {
             OperationResult.Success(transactions)

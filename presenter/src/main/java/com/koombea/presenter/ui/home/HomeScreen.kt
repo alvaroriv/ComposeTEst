@@ -43,7 +43,6 @@ import com.koombea.androidtemplate.ui.theme.GreenContainer
 import com.koombea.androidtemplate.ui.theme.RedContainer
 import com.koombea.data.character.base.model.Transaction
 import com.koombea.presenter.R
-
 import com.koombea.presenter.ui.login.TransactionViewModel
 
 @Composable
@@ -188,7 +187,7 @@ fun ItemTransaction(transaction: Transaction, onItemSelected: (Transaction) -> U
         .background(BackgrounItemTransaction, shape = RoundedCornerShape(24.dp))
         .clickable { onItemSelected(transaction) }, verticalAlignment = Alignment.CenterVertically){
         Image(
-            painter = painterResource(id = R.mipmap.group222),
+            painter = painterResource(id = R.mipmap.group223),
             contentDescription = ""
         )
         Column() {
@@ -196,7 +195,7 @@ fun ItemTransaction(transaction: Transaction, onItemSelected: (Transaction) -> U
                 Text(text =  transaction.category,
                     style = TextStyle(fontSize = 16.sp, color = Color.Black, fontWeight = FontWeight.Bold), textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text =  transaction.value,
+                Text(text =  "$ "+transaction.value,
                     style = TextStyle(fontSize = 16.sp, color = Color.Red), textAlign = TextAlign.Center)
             }
             Spacer(modifier = Modifier.height(13.dp))
@@ -204,7 +203,7 @@ fun ItemTransaction(transaction: Transaction, onItemSelected: (Transaction) -> U
                 Text(text = transaction.description,
                     style = TextStyle(fontSize = 13.sp, color = GrayBorder), textAlign = TextAlign.Center)
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = transaction.description,
+                Text(text = transaction.dateCreated,
                     style = TextStyle(fontSize = 13.sp, color = GrayBorder), textAlign = TextAlign.Center)
             }
 

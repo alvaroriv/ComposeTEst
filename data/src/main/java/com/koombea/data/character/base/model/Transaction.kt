@@ -6,5 +6,6 @@ data class Transaction(
     var description: String = "",
     var wallet: String = "",
     var attachment: String = "",
-    var reminder: String = ""
+    var reminder: String = "",
+    var dateCreated: String = ""
 )
