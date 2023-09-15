@@ -31,7 +31,10 @@
             android:name="com.koombea.presenter.ui.home.DashboardActivity">
         </activity>
         <activity
-            android:name="com.koombea.presenter.ui.signup.SignUpActivity">
+    android:name="com.koombea.presenter.ui.signup.SignUpActivity">
+        </activity>
+        <activity
+        android:name="com.koombea.presenter.ui.settings.CurrencyActivity">
         </activity>
     </application>
 

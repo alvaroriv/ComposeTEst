@@ -7,6 +7,7 @@ import androidx.navigation.compose.composable
 import com.koombea.presenter.model.BottomNavItem
 import com.koombea.presenter.ui.login.SettingsViewModel
 import com.koombea.presenter.ui.login.TransactionViewModel
+import com.koombea.presenter.ui.settings.SettingsScreen
 
 @Composable
 fun NavigationGraph(navController: NavHostController, settingsViewModel: SettingsViewModel,transactionViewModel: TransactionViewModel) {

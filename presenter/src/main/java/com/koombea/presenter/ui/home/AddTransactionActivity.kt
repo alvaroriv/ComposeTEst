@@ -95,13 +95,13 @@ class AddTransactionActivity : ComponentActivity() {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 transactionViewModel.state.collect {
                     when (it.isAdded) {
-                        true -> {
-                            Toast.makeText(this@AddTransactionActivity,"Added", Toast.LENGTH_LONG).show()
-                        }
-
-                        false -> {
-                            Toast.makeText(this@AddTransactionActivity,"Error", Toast.LENGTH_LONG).show()
-                        }
+//                        true -> {
+//                            Toast.makeText(this@AddTransactionActivity,"Added", Toast.LENGTH_LONG).show()
+//                        }
+//
+//                        false -> {
+//                            Toast.makeText(this@AddTransactionActivity,"Error", Toast.LENGTH_LONG).show()
+//                        }
 
                         else -> {}
                     }

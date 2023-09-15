@@ -1,9 +1,11 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package com.koombea.presenter.ui.home
+package com.koombea.presenter.ui.settings
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -25,16 +27,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.koombea.androidtemplate.ui.theme.GrayBorder
+import com.koombea.data.character.base.SharedPrefUtils
 import com.koombea.presenter.R
 import com.koombea.presenter.ui.login.SettingsViewModel
 
@@ -42,6 +45,7 @@ import com.koombea.presenter.ui.login.SettingsViewModel
 @Composable
 fun SettingsContent(settingsViewModel: SettingsViewModel) {
     val state by settingsViewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
@@ -83,7 +87,10 @@ fun SettingsContent(settingsViewModel: SettingsViewModel) {
         Spacer(modifier = Modifier.height(28.dp))
         Row(modifier = Modifier
             .fillMaxWidth()
-            .height(56.dp)) {
+            .height(56.dp)
+            .clickable {
+                context.startActivity(Intent(context, CurrencyActivity::class.java))
+            }) {
             Text(
                 text = "Currency",
                 style = TextStyle(
@@ -93,7 +100,9 @@ fun SettingsContent(settingsViewModel: SettingsViewModel) {
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(
-                text = "USD",
+                text = if (SharedPrefUtils.getStringData(context,"currency").isNullOrEmpty())
+                    "USD"
+                else SharedPrefUtils.getStringData(context,"currency").toString(),
                 style = TextStyle(
                     fontSize = 14.sp,
                     color = Color(0xFF91919F)
@@ -152,7 +161,7 @@ fun SettingsHeader(){
         Text(text = "Settings",
             style = TextStyle(fontSize = 18.sp, fontWeight = FontWeight.Bold))
     }
-    Divider(color = Color.Gray, thickness = 1.dp)
+    Divider(color = Color.LightGray, thickness = 1.dp)
 }
 
 @OptIn(ExperimentalLifecycleComposeApi::class)

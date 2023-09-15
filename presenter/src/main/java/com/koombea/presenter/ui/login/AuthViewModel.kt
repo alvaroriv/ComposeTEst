@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.koombea.data.character.base.model.User
 import com.koombea.data.character.base.OperationResult
+import com.koombea.domain.usecase.GetUserUseCase
 import com.koombea.domain.usecase.LoginUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -11,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class AuthViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
+class AuthViewModel(private val loginUseCase: LoginUseCase, private val getUserUseCase: GetUserUseCase) : ViewModel() {
 
     private val _state = MutableStateFlow(MainActivityState())
 
@@ -28,6 +29,22 @@ class AuthViewModel(private val loginUseCase: LoginUseCase) : ViewModel() {
                     }
                     is OperationResult.Error -> {
                         _state.value = _state.value.copy(isLogged = 0)
+                    }
+
+                }
+            }
+        }
+    }
+
+    fun getUser() {
+        viewModelScope.launch(Dispatchers.IO) {
+            getUserUseCase.perform().let { result ->
+                when (result) {
+                    is OperationResult.Success -> {
+                        _state.value = _state.value.copy(isLogged = 1)
+                    }
+                    is OperationResult.Error -> {
+                        _state.value = _state.value.copy(error = result.exception?.message )
                     }
 
                 }
@@ -54,4 +71,5 @@ data class MainActivityState(
     val isLogged: Int = -1,
     val userName: String = "",
     val userEmail: String = "",
+    val user: User? = null
 )
