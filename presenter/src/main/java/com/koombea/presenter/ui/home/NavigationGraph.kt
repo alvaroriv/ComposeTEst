@@ -7,7 +7,7 @@ import androidx.navigation.compose.composable
 import com.koombea.presenter.model.BottomNavItem
 import com.koombea.presenter.ui.login.SettingsViewModel
 import com.koombea.presenter.ui.login.TransactionViewModel
-import com.koombea.presenter.ui.settings.SettingsScreen
+import com.koombea.presenter.ui.settings.ModalBottomSheetSample
 
 @Composable
 fun NavigationGraph(navController: NavHostController, settingsViewModel: SettingsViewModel,transactionViewModel: TransactionViewModel) {
@@ -19,7 +19,7 @@ fun NavigationGraph(navController: NavHostController, settingsViewModel: Setting
             TransactionScreen(transactionViewModel)
         }
         composable(BottomNavItem.Settings.screen_route) {
-            SettingsScreen(settingsViewModel)
+            ModalBottomSheetSample(settingsViewModel)
         }
     }
 }

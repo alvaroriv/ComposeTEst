@@ -22,12 +22,12 @@ import com.koombea.presenter.ui.home.DashboardActivity
 import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class MainActivity : ComponentActivity() {
+class LoginActivity : ComponentActivity() {
 
     private val authViewModel: AuthViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        authViewModel.getUser()
         setContent {
             AndroidtemplateTheme {
                 Surface(
@@ -47,16 +47,17 @@ class MainActivity : ComponentActivity() {
                 authViewModel.state.collect {
                     when (it.isLogged) {
                         1 -> {
-                            startActivity(Intent(this@MainActivity, DashboardActivity::class.java))
+                            val intent = Intent(this@LoginActivity, DashboardActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
+                            startActivity(intent)
                             finish()
                         }
 
                         0 -> {
-                            startActivity(Intent(this@MainActivity, DashboardActivity::class.java))
-                            finish()
+                            Toast.makeText(this@LoginActivity, it.error, Toast.LENGTH_SHORT).show()
                         }
 
-                        else -> {}
+
                     }
                 }
             }

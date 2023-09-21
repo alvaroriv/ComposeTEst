@@ -28,7 +28,7 @@ class AuthViewModel(private val loginUseCase: LoginUseCase, private val getUserU
                         _state.value = _state.value.copy(isLogged = 1)
                     }
                     is OperationResult.Error -> {
-                        _state.value = _state.value.copy(isLogged = 0)
+                        _state.value = _state.value.copy(isLogged = 0,error = "Login Inválido")
                     }
 
                 }

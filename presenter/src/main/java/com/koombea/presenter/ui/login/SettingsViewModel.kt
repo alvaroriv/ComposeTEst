@@ -4,13 +4,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.koombea.data.character.base.OperationResult
 import com.koombea.data.character.base.model.User
+import com.koombea.domain.usecase.EditProfileUseCase
 import com.koombea.domain.usecase.GetUserUseCase
+import com.koombea.domain.usecase.SignOutUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(private val getUerUseCase: GetUserUseCase) : ViewModel() {
+class SettingsViewModel(private val getUserUseCase: GetUserUseCase,
+                        private val signOutUseCase: SignOutUseCase,
+                        private val editProfileUseCase: EditProfileUseCase) : ViewModel() {
 
     private val _state = MutableStateFlow(DashboardActivityState())
 
@@ -19,7 +23,39 @@ class SettingsViewModel(private val getUerUseCase: GetUserUseCase) : ViewModel()
 
     fun getUser() {
         viewModelScope.launch(Dispatchers.IO) {
-            getUerUseCase.perform().let { result ->
+            getUserUseCase.perform().let { result ->
+                when (result) {
+                    is OperationResult.Success -> {
+                        _state.value = _state.value.copy(user = result.data)
+                    }
+                    is OperationResult.Error -> {
+                        _state.value = _state.value.copy(error = result.exception?.message )
+                    }
+
+                }
+            }
+        }
+    }
+
+    fun signOut(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            signOutUseCase.perform(user).let { result ->
+                when (result) {
+                    is OperationResult.Success -> {
+                        _state.value = _state.value.copy(user = null)
+                    }
+                    is OperationResult.Error -> {
+                        _state.value = _state.value.copy(error = result.exception?.message )
+                    }
+
+                }
+            }
+        }
+    }
+
+    fun editUser(user: User) {
+        viewModelScope.launch(Dispatchers.IO) {
+            editProfileUseCase.perform(user).let { result ->
                 when (result) {
                     is OperationResult.Success -> {
                         _state.value = _state.value.copy(user = result.data)

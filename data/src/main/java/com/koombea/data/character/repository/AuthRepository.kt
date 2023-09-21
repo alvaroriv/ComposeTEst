@@ -8,4 +8,5 @@ interface AuthRepository {
      suspend fun signUp(user: User): OperationResult<Boolean>
 
      suspend fun getUser(): OperationResult<User>
+     suspend fun signOut(user: User): OperationResult<Boolean>
 }
