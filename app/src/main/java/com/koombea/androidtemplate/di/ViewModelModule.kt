@@ -11,6 +11,6 @@ import org.koin.dsl.module
 val ViewModelModule = module {
     viewModel { AuthViewModel(loginUseCase = get(), getUserUseCase = get()) }
     viewModel { SignUpViewModel(signUpUseCase = get()) }
-    viewModel { SettingsViewModel(getUerUseCase = get(), signOutUseCase = get()) }
+    viewModel { SettingsViewModel(getUserUseCase = get(), signOutUseCase = get(), editProfileUseCase = get() ) }
     viewModel { TransactionViewModel(getTransactionsUseCase = get(), addTransactionUseCase = get()) }
 }

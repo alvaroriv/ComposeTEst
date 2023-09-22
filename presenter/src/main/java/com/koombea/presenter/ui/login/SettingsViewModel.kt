@@ -29,7 +29,7 @@ class SettingsViewModel(private val getUserUseCase: GetUserUseCase,
                         _state.value = _state.value.copy(user = result.data)
                     }
                     is OperationResult.Error -> {
-                        _state.value = _state.value.copy(error = result.exception?.message )
+                        _state.value = _state.value.copy(message = result.exception?.message )
                     }
 
                 }
@@ -45,7 +45,7 @@ class SettingsViewModel(private val getUserUseCase: GetUserUseCase,
                         _state.value = _state.value.copy(user = null)
                     }
                     is OperationResult.Error -> {
-                        _state.value = _state.value.copy(error = result.exception?.message )
+                        _state.value = _state.value.copy(message = result.exception?.message )
                     }
 
                 }
@@ -58,10 +58,10 @@ class SettingsViewModel(private val getUserUseCase: GetUserUseCase,
             editProfileUseCase.perform(user).let { result ->
                 when (result) {
                     is OperationResult.Success -> {
-                        _state.value = _state.value.copy(user = result.data)
+                        _state.value = _state.value.copy(message = "User updated")
                     }
                     is OperationResult.Error -> {
-                        _state.value = _state.value.copy(error = result.exception?.message )
+                        _state.value = _state.value.copy(message = result.exception?.message )
                     }
 
                 }
@@ -71,6 +71,6 @@ class SettingsViewModel(private val getUserUseCase: GetUserUseCase,
 }
 
 data class DashboardActivityState(
-    val error: String? = "",
+    val message: String? = "",
     val user: User? = null
 )

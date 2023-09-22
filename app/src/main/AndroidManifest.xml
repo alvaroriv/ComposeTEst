@@ -36,6 +36,9 @@
         <activity
         android:name="com.koombea.presenter.ui.settings.CurrencyActivity">
         </activity>
+        <activity
+        android:name="com.koombea.presenter.ui.settings.EditProfileActivity">
+        </activity>
     </application>
 
 </manifest>

@@ -109,7 +109,9 @@ fun ModalBottomSheetSample(settingsViewModel: SettingsViewModel) {
                     Image(modifier = Modifier
                         .padding(0.dp, 0.dp, 8.dp, 0.dp)
                         .width(80.dp)
-                        .height(80.dp),
+                        .height(80.dp).clickable {
+                            context.startActivity(Intent(context, EditProfileActivity::class.java))
+                        },
                         painter = painterResource(id = R.mipmap.avatar05),
                         contentDescription = ""
                     )

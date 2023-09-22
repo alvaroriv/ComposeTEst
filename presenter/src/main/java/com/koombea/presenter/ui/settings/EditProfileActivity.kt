@@ -24,6 +24,7 @@ class EditProfileActivity : ComponentActivity() {
     private val settingsViewModel: SettingsViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        settingsViewModel.getUser()
 
         setContent {
             AndroidtemplateTheme {
@@ -42,20 +43,8 @@ class EditProfileActivity : ComponentActivity() {
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 settingsViewModel.state.collect {
-                    when (it.user) {
-                        1 -> {
-                            val intent = Intent(this@EditProfileActivity, DashboardActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                            startActivity(intent)
-                            finish()
-                        }
-
-                        0 -> {
-                            Toast.makeText(this@EditProfileActivity,"Error", Toast.LENGTH_LONG).show()
-                        }
-
-                        else -> {}
-                    }
+                    if(it.message?.isNotEmpty() == true)
+                    Toast.makeText(this@EditProfileActivity,it.message, Toast.LENGTH_LONG).show()
                 }
             }
         }

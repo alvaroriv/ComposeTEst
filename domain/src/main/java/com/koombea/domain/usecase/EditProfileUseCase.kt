@@ -6,7 +6,7 @@ import com.koombea.data.character.repository.AuthRepository
 
 class EditProfileUseCase(private val authRepository: AuthRepository) {
     suspend fun perform(user: User): OperationResult<Boolean> {
-      return  when(val result =  authRepository.signOut(user)){
+      return  when(val result =  authRepository.editUser(user)){
               is OperationResult.Success -> {
                   OperationResult.Success(result.data)
               }

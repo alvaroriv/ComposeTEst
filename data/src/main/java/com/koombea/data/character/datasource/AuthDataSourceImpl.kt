@@ -53,7 +53,13 @@ class AuthDataSourceImpl(private val couchbaseDatabase: CouchbaseDatabase): Auth
     }
 
     override suspend fun editProfile(user: User): OperationResult<Boolean> {
-        TODO("Not yet implemented")
+        return try {
+            val document = CouchbaseDocument(id = "1", attributes = user)
+            couchbaseDatabase.save(document)
+            OperationResult.Success(true)
+        } catch (e: Exception) {
+            OperationResult.Error(e)
+        }
     }
 
     private fun addTestUser(){
