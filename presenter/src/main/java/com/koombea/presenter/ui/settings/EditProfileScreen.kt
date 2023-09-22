@@ -54,8 +54,8 @@ fun EditProfileScreen(settingsViewModel: SettingsViewModel) {
         val state by settingsViewModel.state.collectAsStateWithLifecycle()
         var user = state.user
 
-        val name = remember { mutableStateOf(TextFieldValue()) }
-        val email = remember { mutableStateOf(TextFieldValue()) }
+        val name = remember { mutableStateOf(TextFieldValue(user?.name.toString())) }
+        val email = remember { mutableStateOf(user?.email.toString()) }
         val birthday = remember { mutableStateOf(TextFieldValue()) }
         val activity = (LocalContext.current as? Activity)
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
@@ -85,8 +85,8 @@ fun EditProfileScreen(settingsViewModel: SettingsViewModel) {
         OutlinedTextField(
             label = { Text(text = "Email") },
             value = email.value,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-            onValueChange = { email.value = it },
+            onValueChange = {
+                email.value = it },
             modifier = Modifier.fillMaxWidth(),
             colors = textFieldLineColor()
         )
@@ -104,9 +104,9 @@ fun EditProfileScreen(settingsViewModel: SettingsViewModel) {
         Box() {
             Button(
                 onClick = {
-                    var user = User(name = name.value.text,
-                        email = email.value.text,
-                        birthday = birthday.value.text)
+                    user?.name = name.value.text
+                    user?.email = email.value
+                    user?.birthday = birthday.value.text
                     settingsViewModel.editUser(user)
                 },
                 shape = RoundedCornerShape(16.dp),

@@ -1,5 +1,6 @@
 package com.koombea.presenter.ui.settings
 
+import android.app.Activity
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -100,16 +101,16 @@ fun CurrencyScreen() {
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-
-        val email = remember{mutableStateOf(TextFieldValue())}
-        val password = remember{mutableStateOf(TextFieldValue())}
+        val context = LocalContext.current as Activity
 
         Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically){
             Icon(
                 imageVector = Icons.Filled.ArrowBack,
                 contentDescription = "",
                 tint = Color.Black,
-                modifier = Modifier.clickable {  }
+                modifier = Modifier.clickable {
+                    context.finish()
+                }
             )
             Spacer(modifier = Modifier.weight(1f))
             Text(text = "Currency",

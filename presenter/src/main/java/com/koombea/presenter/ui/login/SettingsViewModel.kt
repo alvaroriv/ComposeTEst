@@ -10,6 +10,7 @@ import com.koombea.domain.usecase.SignOutUseCase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val getUserUseCase: GetUserUseCase,
@@ -26,7 +27,10 @@ class SettingsViewModel(private val getUserUseCase: GetUserUseCase,
             getUserUseCase.perform().let { result ->
                 when (result) {
                     is OperationResult.Success -> {
-                        _state.value = _state.value.copy(user = result.data)
+//                        _state.value = _state.value.copy(user = result.data)
+                        _state.update {
+                            it.copy(user = result.data)
+                        }
                     }
                     is OperationResult.Error -> {
                         _state.value = _state.value.copy(message = result.exception?.message )
@@ -42,7 +46,7 @@ class SettingsViewModel(private val getUserUseCase: GetUserUseCase,
             signOutUseCase.perform(user).let { result ->
                 when (result) {
                     is OperationResult.Success -> {
-                        _state.value = _state.value.copy(user = null)
+                        _state.value = _state.value.copy(user = null, message = "Logout")
                     }
                     is OperationResult.Error -> {
                         _state.value = _state.value.copy(message = result.exception?.message )
@@ -53,7 +57,7 @@ class SettingsViewModel(private val getUserUseCase: GetUserUseCase,
         }
     }
 
-    fun editUser(user: User) {
+    fun editUser(user: User?) {
         viewModelScope.launch(Dispatchers.IO) {
             editProfileUseCase.perform(user).let { result ->
                 when (result) {

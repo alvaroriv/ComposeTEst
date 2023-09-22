@@ -22,7 +22,7 @@ class AuthRepositoryImp(private val authDataSource: AuthDataSource):AuthReposito
         return authDataSource.signOut(user)
     }
 
-    override suspend fun editUser(user: User): OperationResult<Boolean> {
+    override suspend fun editUser(user: User?): OperationResult<Boolean> {
         return authDataSource.editProfile(user)
     }
 }

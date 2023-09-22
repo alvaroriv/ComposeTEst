@@ -22,12 +22,12 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DashboardActivity : ComponentActivity() {
-
     private val settingsViewModel: SettingsViewModel by viewModel()
     private val transactionViewModel: TransactionViewModel by viewModel()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         settingsViewModel.getUser()
+        transactionViewModel.getTransactions()
         setContent {
             AndroidtemplateTheme {
                 Surface(
@@ -43,15 +43,14 @@ class DashboardActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        transactionViewModel.getTransactions()
     }
 
     private fun observeViewModel(){
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED) {
                 settingsViewModel.state.collect {
-                    when (it.user) {
-                        null -> {
+                    when (it.message) {
+                        "Logout" -> {
                             val intent = Intent(this@DashboardActivity, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
                             startActivity(intent)

@@ -22,22 +22,32 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.ExperimentalLifecycleComposeApi
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.koombea.androidtemplate.ui.theme.GrayBorder
@@ -47,11 +57,33 @@ import com.koombea.presenter.ui.login.SettingsViewModel
 import kotlinx.coroutines.launch
 
 @Composable
+fun rememberLifecycleEvent(lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current): Lifecycle.Event {
+    var state by remember { mutableStateOf(Lifecycle.Event.ON_ANY) }
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            state = event
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+    return state
+}
+@Composable
 @OptIn(ExperimentalMaterialApi::class, ExperimentalLifecycleComposeApi::class)
 fun ModalBottomSheetSample(settingsViewModel: SettingsViewModel) {
     val stateModal = rememberModalBottomSheetState(ModalBottomSheetValue.Hidden)
     val scope = rememberCoroutineScope()
     val state by settingsViewModel.state.collectAsStateWithLifecycle()
+
+    val lifecycleEvent = rememberLifecycleEvent()
+    LaunchedEffect(lifecycleEvent) {
+        if (lifecycleEvent == Lifecycle.Event.ON_RESUME) {
+            settingsViewModel.getUser()
+        }
+    }
+
     ModalBottomSheetLayout(
         sheetState = stateModal,
         sheetContent = {
@@ -74,17 +106,19 @@ fun ModalBottomSheetSample(settingsViewModel: SettingsViewModel) {
                 Row(modifier = Modifier
                     .fillMaxWidth()) {
                     Button(onClick = { scope.launch { stateModal.hide() } },
-                    modifier = Modifier.fillMaxWidth().weight(1f).height(56.dp).background(color = Color(0xFFEEE5FF)),
-                    shape = RoundedCornerShape(16.dp)) {
+                    modifier = Modifier.fillMaxWidth().weight(1f).height(56.dp),
+                    shape = RoundedCornerShape(16.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFFEEE5FF))) {
                         Text(text = "No", style = TextStyle(
-                            fontSize = 18.sp), color = Color(0xFFEEE5FF))
+                            fontSize = 18.sp), color = Color(0xFF7F3DFF))
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     Button(onClick = { settingsViewModel.signOut(state.user!!) },
                         modifier = Modifier.fillMaxWidth().weight(1f).height(56.dp),
-                        shape = RoundedCornerShape(16.dp)) {
+                        shape = RoundedCornerShape(16.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF7F3DFF))) {
                         Text(text = "Yes", style = TextStyle(
-                            fontSize = 18.sp), color = Color(0xFF7F3DFF))
+                            fontSize = 18.sp), color = Color(0xFFffffff))
                     }
                 }
             }
